@@ -28,7 +28,7 @@
                                     <td>{{$post->user->name}}</td>
                                     <td>{{$post->category->title}}</td>
                                     <td>
-                                        <a href="{{ route('blog.admin.posts.create', $post->id )}}">{{$post->title}}</a>
+                                        <a href="{{ route('blog.admin.posts.edit', $post->id )}}">{{$post->title}}</a>
                                     </td>
                                     <td>
                                         {{ $post->published_at ? \Carbon\Carbon::parse($post->published_at)->format('d.M H:i') : '' }}
