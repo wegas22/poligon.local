@@ -53,14 +53,14 @@ class CategoryController extends BaseController
     public function store(BlogCategoryCreateRequest $request)
     {
         $data = $request->input();
+        $it = BlogCategory::all();
         if (empty($data['slug'])){
-            $data['slug'] = str_slug($data['title']);
+            $data['slug'] = \Str::slug($data['title']);
         }
+        //if ($data['slug'] == )
 
-        //Создаст обьект но не добавить в бд
-        $item = new BlogCategory($data);
-
-        $item->save();
+        //Создаст обьект
+        $item = (new BlogCategory())->create($data);
 
         if ($item){
             return redirect()->route('blog.admin.categories.edit', [$item->id])->with(['success'=> 'Успешно сохранено']);
@@ -131,7 +131,12 @@ class CategoryController extends BaseController
             return back()->withErrors(['msg' => "Запись id = [{$id}] не найдена"]) ->withInput();
         }
         $data = $request->all();
-        $result = $item->fill($data)->save();
+        if (empty($data['slug'])){
+            $data['slug'] = \Str::slug($data['title']);
+        }
+        //$result = $item->fill($data)->save();
+        $result = $item->update($data);
+
         if($result) {
             return redirect()->route('blog.admin.categories.edit', $item->id)->with(['success'=> 'Успешно сохранено']);
         }
